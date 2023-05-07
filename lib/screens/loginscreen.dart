@@ -3,10 +3,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:testproj/screens/post_page.dart';
-import 'package:testproj/providers/loginproviders.dart';
+
 import 'package:testproj/screens/signupscreen.dart';
+import 'package:testproj/screens/uploadscreen.dart';
 import 'package:testproj/utils/utils.dart';
 import 'package:provider/provider.dart';
+
+import 'package:testproj/providers/loginproviders.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -75,9 +78,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Consumer<LoginProvider>(builder: (context, prov, _) {
                   return InkWell(
-                    onTap: () {
-                      isLoading = true;
-                    },
+                    //   onTap: () {
+                    //   prov.setIsLoading(true);
+                    //  isLoading = true;
+                    //    },
                     child: Container(
                       height: 50,
                       width: 250,
@@ -92,28 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           // });
                           if (_formkey.currentState!.validate()) {
-                            _auth
-                                .signInWithEmailAndPassword(
-                                    email: _emailController.text.toString(),
-                                    password: _passController.text.toString())
-                                .then((value) {
-                              //  setState(() {
-                              // isLoading = false;
-                              prov.setIsLoading(false);
-                              // });]
-
-                              Utils().message(value.user!.email.toString());
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PostPage()));
-                            }).onError((error, stackTrace) {
-                              //setState(() {
-                              // isLoading = false;
-                              prov.setIsLoading(false);
-                              // });
-                              Utils().message(error.toString());
-                            });
+                            prov.authCheck(_emailController.text.toString(),
+                                _passController.text.toString(), context);
                           }
                         },
                         child: prov.getLoading()
@@ -146,6 +130,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                   )));
                     },
                     child: Text("Sign Up"),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UploadScreen()));
+                    },
+                    child: Text("Storage"),
                   ),
                 ),
               ],

@@ -89,24 +89,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           prov.setIsLoading(true);
                           // });
                           if (_formkey.currentState!.validate()) {
-                            _auth
-                                .createUserWithEmailAndPassword(
-                                    email: _emailController.text.toString(),
-                                    password:
-                                        _passwordController.text.toString())
-                                .then((value) {
-                              //setState(() {
-
-                              //loading = false;
-                              prov.setIsLoading(false);
-                              // });
-                            }).onError((error, stackTrace) {
-                              Utils().message(error.toString());
-                              //  setState(() {
-                              // loading = false;
-                              prov.setIsLoading(false);
-                              //  });
-                            });
+                            prov.signUp(_emailController.text.toString(),
+                                _passwordController.text.toString(), context);
                           }
                         },
                         child: prov.getLoading()
